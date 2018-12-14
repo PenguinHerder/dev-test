@@ -11,7 +11,13 @@ $res = $client->request('GET', 'http://3ev.org/dev-test-api/');
 $data = json_decode($res->getBody(), true);
 
 //Sort the episodes
-array_multisort(array_keys($data), SORT_ASC, SORT_STRING, $data);
+uasort($data, function($a, $b) {
+	if($a['season'] === $b['season']) {
+		return $a['episode'] <=> $b['episode'];
+	}
+	
+	return $a['season'] <=> $b['season'];
+});
 
 //Render the template
 echo $twig->render('page.html', ["episodes" => $data]);
