@@ -13,5 +13,21 @@ $data = json_decode($res->getBody(), true);
 //Sort the episodes
 array_multisort(array_keys($data), SORT_ASC, SORT_STRING, $data);
 
+$seasons = [];
+foreach($data as $episode) {
+	if(!in_array($episode['season'], $seasons)) {
+		$seasons[] = $episode['season'];
+	}
+}
+
+sort($seasons, SORT_NUMERIC);
+$selected = (int)$_GET['season'];
+
+if($selected > 0) {
+	$data = array_filter($data, function($item) use($selected) {
+		return $item['season'] == $selected;
+	});
+}
+
 //Render the template
-echo $twig->render('page.html', ["episodes" => $data]);
+echo $twig->render('page.html', ["episodes" => $data, 'seasons' => $seasons, 'selected' => $selected]);
