@@ -6,12 +6,7 @@ $loader = new Twig_Loader_Filesystem('../templates/');
 $twig = new Twig_Environment($loader, ['debug' => true]);
 
 //Get the episodes from the API
-$client = new GuzzleHttp\Client();
-$res = $client->request('GET', 'http://3ev.org/dev-test-api/');
-$data = json_decode($res->getBody(), true);
-
-//Sort the episodes
-array_multisort(array_keys($data), SORT_ASC, SORT_STRING, $data);
-
+$provider = new \App\DataProvider();
+$data = $provider->getData();
 //Render the template
-echo $twig->render('page.html', ["episodes" => $data]);
+echo $twig->render('page.html', ["episodes" => $data['data'], 'status' => $data['status']]);
