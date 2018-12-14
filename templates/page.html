@@ -13,17 +13,25 @@
         <p><img class="img-circle" src="resources/img/bobby.jpg"></p>
       </div>
     </div>
+	
+	<div class="container">
+		{% if isError %}
+			<div class='row'>
+				<div class="col-md-12">
+					<p class="alert alert-danger">Sorry, there was an error. Please try again by reloading the page.</p>
+				</div>
+			</div>
+		{% else %}
+			{% for episode in episodes %}
+				{% if loop.index%2 == 1 %}<div class="row">{%endif %}
 
-    <div class="container">
-        {% for episode in episodes %}
-            {% if loop.index%2 == 1 %}<div class="row">{%endif %}
+					{{ include('episode.html') }}
 
-                {{ include('episode.html') }}
-        
-            {% if loop.index%2 == 0 %}</div>{%endif %}
-        {% endfor %}
-    </div>
-
+				{% if loop.index%2 == 0 %}</div>{%endif %}
+			{% endfor %}
+		{% endif %}
+	</div>
+	
     <footer class="footer">
       <div class="container-fluid">
           <div class="row">
